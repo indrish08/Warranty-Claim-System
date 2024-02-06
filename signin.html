@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Signin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="public/css/signin.css">  
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/signin.css">
+</head>
+<body>
+    
+    <header>
+        <nav class="navbar navbar-dark bg-primary navbar-expand-sm">
+          <a href="/" class="navbar-brand ps-3">Pulse Beat</a>
+          <button
+            class="navbar-toggler"
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a href="/products" class="nav-link text-light">Orders</a>
+              </li>
+              <li class="nav-item">
+                <a href="/warranty" class="nav-link text-light">Claim History</a>
+              </li>
+              <!-- <li class="nav-item">
+                <a href="/dashboard" class="nav-link text-light">Dashboard</a>
+              </li> -->
+              <li class="nav-item">
+                <a href="/signIn" class="nav-link text-light signin">SignIn</a>
+                <a href="/logout" class="nav-link text-dark user-link">
+                  <div class="rounded-circle d-flex justify-content-center align-items-center user">
+                    <i class="fa fa-user"></i>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <section class="login-block  mt-5 mb-5">
+        <div class="row w-75 m-auto shadow rounded">
+  
+          <div class="left-part col-lg-6 rounded">
+            <div class="content h-100 d-flex flex-column justify-content-center align-items-center p-3">
+              <h2 class="">Pulse Beat</h2>
+              <p class="pt-3">Welcome to PulseBeat, where music comes alive with every beat! Immerse yourself in an extraordinary audio experience with our premium collection of earphones and headphones. Feel the pulse of innovation as we harmonize cutting-edge technology with sleek design, delivering unparalleled sound quality. At PulseBeat, we understand the rhythm of your lifestyle, and our audio devices are crafted to elevate your every moment. Join us on a journey where passion for music meets the heartbeat of innovation – PulseBeat, where every beat matters.</p>
+            </div>
+          </div>
+  
+          <div class="right-part col-lg-6 p-0 rounded">
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="w-100 content">
+                <form class="mb-4 row" action="/signin" method="post">
+                  <div class="mb-4 d-flex">
+                    <h2 class="title col-6">Sign In</h2>
+                    <div class="col-6 d-flex justify-content-end">
+                      <a href="" class="social-icon d-flex justify-content-center align-items-center text-decoration-none text-dark border"><span class="fa fa-facebook"></span></a>
+                      <a href="" class="social-icon d-flex justify-content-center align-items-center text-decoration-none text-dark border"><span class="fa fa-twitter"></span></a>
+                    </div>
+
+                  </div>
+      
+                  <div class="mb-3 col-12 form-outline">
+                    <label for="username" class="form-label text-uppercase">Username</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+                  </div>
+      
+                  <div class="mb-4 col-12">
+                    <label for="password" class="form-label text-uppercase">Password</label>
+                    <div class="input-group">
+                      <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                      <span class="eye-span input-group-text">
+                        <i class="eye-icon fa fa-eye"></i>  
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3 col-12">
+                    <button type="submit" class="form-control submit btn btn-warning text-light col-12 ">Sign In</button>  
+                  </div>
+
+                  <div class="form-group row m-auto">
+                    <div class="col-sm-6 p-0">
+                      <input type="checkbox" class="form-check-input checkmark" name="remember" id="forget-password">
+                      <label for="forget-password" class="form-check-label remember">Remember me</label>
+                    </div>
+                    
+                    <div class="col-sm-6 p-0">
+                      <a href="" class="float-end text-secondary text-decoration-none">Forgot Password</a>
+                    </div>
+                  </div>
+      
+                </form>
+                <p class="text-center text-secondary">Not a member? <a href="" class="signup text-decoration-none">Sign Up</a></p>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+      </section>
+
+
+</body>
+<script src="public/js/signin.js"></script>
+<script src="public/js/jquery.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/signin.js"></script>
+<script src="js/authStatus.js"></script>
+</html>

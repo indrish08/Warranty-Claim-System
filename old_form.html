@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Warranty Claim System</title>
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/old_form.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/old_form.css">
+</head>
+<body>
+    <header>
+        <div class="title">
+            <a href="/"><h2>Warranty Claim System</h2></a>
+        </div>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="/product">Products</a></li>
+                <li><a href="/warranty">Claim Warranty</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/signin">SignIn/SignUp</a></li>
+            </ul>   
+        </nav>
+    </header>
+    <section>
+        <div class="container1">
+            <div class="form">
+                <h3>Raise a Warranty Claim here:</h3>
+                <form action="/submit" method="post">
+                    <div class="address div">
+                        <h4>Enter your Address:</h4>
+                        <div class="address_form">
+                            <input type="text" name="name" placeholder="Name" required>
+                            <input type="text" name="address" placeholder="Address" required>
+                            <input type="email" name="email" placeholder="Email" required>
+                            <input type="text" name="city" placeholder="City" required>
+                            <input type="number" name="mobile" placeholder="Mobile Number" required>
+                            <input type="number" name="pincode" placeholder="Pincode" required>
+                        </div>
+                    </div>
+                    <div class="product div">
+                        <h4>Product details:</h4>
+                        <div class="product_form">
+                            <input type="text" name="model" placeholder="Enter the product model" required>
+                            <input type="number" name="order_number" placeholder="Order Number" required>
+                            <input type="date" name="date" placeholder="Date" required>
+                            <label class="file_label" for="invoice">
+                                Select the Invoice
+                                <input type="file" id="invoice" name="invoice" required>
+                            </label>
+                            <input type="text" name="Reason" placeholder="Reason for he Warranty Claim" required>
+                            <label class="file_label" for="product_image">
+                                Select the Photo
+                                <input type="file" id="product_image" name="product_image" required>
+                            </label>
+                        </div>
+                        <div class="product_description">
+                            <textarea name="description" rows="10" placeholder="Explain your issue with product briefly..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="submit div">
+                        <div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

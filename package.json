@@ -1,0 +1,17 @@
+{
+  "name": "warranty-claim-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Indrish S",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "font-awesome": "^4.7.0",
+    "pg": "^8.11.3"
+  }
+}
