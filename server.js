@@ -1,6 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const {Pool} = require('pg')
+const User = require('./models/userModel')
 // const path = require('path')
 // const fs = require('fs')
 
@@ -18,6 +19,8 @@ const port = 3000;
 
 app.use(express.static('node_modules/font-awesome'))
 app.use(express.static('public'))
+app.use(express.static('node_modules/bootstrap/dist'))
+app.use(express.static('node_modules/jquery/dist'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(session({
@@ -58,12 +61,21 @@ app.get('/signin', (req, res) => {
 
 app.post('/signin', async (req, res) => {
     const {username, password} = req.body;
-    const select_data = `
-        SELECT * FROM users WHERE username = $1;
-    `;
-    const result = await client.query(select_data, [username])
-    
-    if (result.rows[0].password === password) {
+    // const select_data = `
+    //     SELECT * FROM users WHERE username = $1;
+    // `;
+    // const result = await client.query(select_data, [username])
+
+    // if (result.rows[0].password === password) {
+    //     req.session.userId = username;
+    //     res.redirect('/products');
+    // }else{
+    //     res.send('Sign In Unsuccess. Username or password is wrong check again.')
+    // }
+
+    const result = await User.findByUsername(username);
+
+    if (result.dataValues.password === password) {
         req.session.userId = username;
         res.redirect('/products');
     }else{

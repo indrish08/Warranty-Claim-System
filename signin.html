@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="public/css/signin.css">  
     <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/signin.css">  
     <link rel="stylesheet" href="css/font-awesome.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/signin.css">
@@ -48,6 +48,20 @@
       </header>
 
       <section class="login-block  mt-5 mb-5">
+        <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#wrongPassword">modal</button> -->
+        <div class="modal fade" id="wrongPassword">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body">
+                <p>The password you entered is incorrect. Please try again.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row w-75 m-auto shadow rounded">
   
           <div class="left-part col-lg-6 rounded">
@@ -60,7 +74,7 @@
           <div class="right-part col-lg-6 p-0 rounded">
             <div class="d-flex justify-content-center align-items-center">
               <div class="w-100 content">
-                <form class="mb-4 row" action="/signin" method="post">
+                <form class="mb-4 row" id="signin-form">   <!-- action="/signin" method="post" -->
                   <div class="mb-4 d-flex">
                     <h2 class="title col-6">Sign In</h2>
                     <div class="col-6 d-flex justify-content-end">
@@ -113,7 +127,14 @@
 </body>
 <script src="public/js/signin.js"></script>
 <script src="public/js/jquery.js"></script>
-<script src="js/jquery.js"></script>
-<script src="js/signin.js"></script>
-<script src="js/authStatus.js"></script>
+<!-- <script src="js/jquery.js"></script>
+  <script src="js/signin.js"></script>
+  <script src="js/authStatus.js"></script> -->
+<script src="js/jquery.slim.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+  // $("#wrongPassword").modal()
+</script>
+
 </html>

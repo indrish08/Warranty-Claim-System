@@ -18,3 +18,19 @@ eye_icon.addEventListener('mouseup', function(){
     password.type = 'password'
 })
 
+document.getElementById('signin-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    try{
+        const response = await fetch('/login', {
+            method: 'POST',
+            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+        });
+
+        const data = await response.json();
+    } catch (error) {
+
+    }
+})
