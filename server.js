@@ -14,7 +14,6 @@ const client = new Pool({
     database: 'pulsebeat',
 });
 
-const host = '127.0.0.1';
 const port = 3000;
 
 app.use(express.static('node_modules/font-awesome'))
@@ -66,8 +65,7 @@ app.post('/signin', async (req, res) => {
     
     if (result.rows[0].password === password) {
         req.session.userId = username;
-        console.log(req.session);
-        res.redirect('/products')
+        res.redirect('/products');
     }else{
         res.send('Sign In Unsuccess. Username or password is wrong check again.')
     }
@@ -75,14 +73,12 @@ app.post('/signin', async (req, res) => {
 
 app.get('/authStatus', (req, res) => {
     const userIsLoggedIn = req.session.userId ? true : false;
-    console.log(userIsLoggedIn)
-    console.log('auth status called')
     res.json({ userIsLoggedIn });
 });
 
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
-        res.redirect('/signin')
+        res.redirect('/signin');
     });
   });
 
@@ -92,6 +88,6 @@ app.post('/submit', (req, res) => {
     console.log(req.body)
 })
 
-app.listen(port, host, () => {
-    console.log(`Server is running at http://${host}:${port}/`);
+app.listen(port, () => {
+    console.log(`Server is running at http://127.0.0.1:${port}/`);
 })

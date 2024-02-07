@@ -25,7 +25,8 @@ body {
 }
 
 .left-part {
-  background-color: beige;
+  /* background-color: beige; */
+  background-color: #e3b04b;
 }
 
 .right-part .title {
