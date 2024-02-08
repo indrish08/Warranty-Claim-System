@@ -2,6 +2,7 @@ const express = require('express')
 const session = require('express-session')
 const {Pool} = require('pg')
 const User = require('./models/userModel')
+require('./initDatabase')
 // const path = require('path')
 // const fs = require('fs')
 
@@ -59,8 +60,39 @@ app.get('/signin', (req, res) => {
     res.sendFile(__dirname + '/signin.html');
 })
 
+app.post('/signup', async (req,res) => {
+    const {username, password} = req.body;
+    // const username = 'indrishh';
+    // const password = 'passs';
+    const user = await User.createUser(username, password);
+    console.log(user);
+    res.status(200).json({message:'success'});
+})
+
 app.post('/signin', async (req, res) => {
     const {username, password} = req.body;
+    console.log(username, password);
+    try{
+        const result = await User.findByUsername(username);
+        var response = {
+            username: false,
+            password: false
+        }
+        if(result){
+            response.username = true;
+            const password_match = await User.comparePassword(password, result.dataValues.password);
+            if (password_match) {
+                response.password = true;
+                req.session.userId = username;
+                return res.status(200).json(response);
+            }
+        }
+        res.status(401).json(response);
+    }catch(error){
+        response.message = error.message;
+        res.status(500).json(response);
+    }
+    
     // const select_data = `
     //     SELECT * FROM users WHERE username = $1;
     // `;
@@ -72,15 +104,6 @@ app.post('/signin', async (req, res) => {
     // }else{
     //     res.send('Sign In Unsuccess. Username or password is wrong check again.')
     // }
-
-    const result = await User.findByUsername(username);
-
-    if (result.dataValues.password === password) {
-        req.session.userId = username;
-        res.redirect('/products');
-    }else{
-        res.send('Sign In Unsuccess. Username or password is wrong check again.')
-    }
 })
 
 app.get('/authStatus', (req, res) => {
@@ -93,12 +116,6 @@ app.get('/logout', (req, res) => {
         res.redirect('/signin');
     });
   });
-
-
-app.post('/submit', (req, res) => {
-    res.send('Thanks for Submitting the form!!');
-    console.log(req.body)
-})
 
 app.listen(port, () => {
     console.log(`Server is running at http://127.0.0.1:${port}/`);

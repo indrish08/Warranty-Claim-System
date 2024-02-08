@@ -22,15 +22,34 @@ document.getElementById('signin-form').addEventListener('submit', async function
     e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
+    const modal_content = document.getElementById('modal-content');
 
+    console.log(username, password);
     try{
-        const response = await fetch('/login', {
+        const response = await fetch('/signin', {
             method: 'POST',
-            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-        });
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `username=${username}&password=${password}`,
+        })
 
-        const data = await response.json();
+        console.log(response);
+        if(response.ok){
+            location.href = '/products';
+        }else{
+            const data = await response.json();
+            if(!data.username){
+                modal_content.innerHTML = 'Username not found. Please try again.';
+            }else if(!data.password){
+                modal_content.innerHTML = 'The password you entered is incorrect. Please try again.';
+            }
+            else{
+                modal_content.innerHTML = data.message;
+            }
+            $("#login-error").modal()
+        }
     } catch (error) {
-
+        console.error('Error fetching :', error);
     }
 })

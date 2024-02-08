@@ -48,15 +48,14 @@
       </header>
 
       <section class="login-block  mt-5 mb-5">
-        <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#wrongPassword">modal</button> -->
-        <div class="modal fade" id="wrongPassword">
+        <div class="modal fade" id="login-error">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-              <div class="modal-body">
-                <p>The password you entered is incorrect. Please try again.</p>
+              <div class="modal-body m-auto">
+                <p id="modal-content">The password you entered is incorrect. Please try again.</p>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary w-75" data-dismiss="modal">OK</button>
               </div>
             </div>
           </div>
@@ -127,14 +126,10 @@
 </body>
 <script src="public/js/signin.js"></script>
 <script src="public/js/jquery.js"></script>
-<!-- <script src="js/jquery.js"></script>
-  <script src="js/signin.js"></script>
-  <script src="js/authStatus.js"></script> -->
+<!-- <script src="js/jquery.js"></script> -->
+<script src="js/signin.js"></script>
+<script src="js/authStatus.js"></script>
 <script src="js/jquery.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
-<script>
-  // $("#wrongPassword").modal()
-</script>
 
 </html>
