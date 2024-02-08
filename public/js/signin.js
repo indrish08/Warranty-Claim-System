@@ -33,8 +33,6 @@ document.getElementById('signin-form').addEventListener('submit', async function
             },
             body: `username=${username}&password=${password}`,
         })
-
-        console.log(response);
         if(response.ok){
             location.href = '/products';
         }else{
