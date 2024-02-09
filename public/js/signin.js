@@ -2,7 +2,6 @@ const password = document.querySelector('#password')
 const eye_icon = document.querySelector('.eye-icon')
 
 eye_icon.addEventListener('mousedown', function(){
-    // this.classList.toggle('fa-eye')
     this.classList.toggle('fa-eye-slash')
     password.type = 'text'
     // if(password.type === 'password'){
@@ -13,7 +12,6 @@ eye_icon.addEventListener('mousedown', function(){
 })
 
 eye_icon.addEventListener('mouseup', function(){
-    // this.classList.toggle('fa-eye')
     this.classList.toggle('fa-eye-slash')
     password.type = 'password'
 })
@@ -24,7 +22,6 @@ document.getElementById('signin-form').addEventListener('submit', async function
     const password = document.getElementById('password').value;
     const modal_content = document.getElementById('modal-content');
 
-    console.log(username, password);
     try{
         const response = await fetch('/signin', {
             method: 'POST',
@@ -34,6 +31,8 @@ document.getElementById('signin-form').addEventListener('submit', async function
             body: `username=${username}&password=${password}`,
         })
         if(response.ok){
+            const data = await response.json();
+            localStorage.setItem('JWT_Token', data.token)
             location.href = '/products';
         }else{
             const data = await response.json();

@@ -1,6 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const {Pool} = require('pg')
+const jwt = require('jsonwebtoken')
 const User = require('./models/userModel')
 require('./initDatabase')
 // const path = require('path')
@@ -17,6 +18,7 @@ const client = new Pool({
 });
 
 const port = 3000;
+const ACCESS_TOKEN_SECRET = 'f9128bb7044d866f11971057c18a315154a09d95ab5834fe6909941c95bff1fcc82f8d4ce6067d6296f1cd649a652537d219626cc9373d6742c1ae783d9b0676'
 
 app.use(express.static('node_modules/font-awesome'))
 app.use(express.static('public'))
@@ -39,6 +41,10 @@ const isAuthenticated = (req, res, next) => {
     }
 }
 
+function generateAccessToken(user) {
+    return jwt.sign(user, ACCESS_TOKEN_SECRET)
+}
+
 app.get('/', (req, res) => {
     res.redirect('/signin')
     // res.sendFile(__dirname + '/index.html');
@@ -50,10 +56,6 @@ app.get('/products', isAuthenticated, (req, res) => {
 
 app.get('/warranty', isAuthenticated, (req, res) => {
     res.sendFile(__dirname + '/warranty.html');
-})
-
-app.get('/dashboard', (req, res) => {
-    res.sendFile(__dirname + '/dashboard.html');
 })
 
 app.get('/signin', (req, res) => {
@@ -82,7 +84,9 @@ app.post('/signin', async (req, res) => {
             const password_match = await User.comparePassword(password, result.dataValues.password);
             if (password_match) {
                 response.password = true;
-                req.session.userId = username;
+                const user = {user: username};
+                const token = generateAccessToken(user);
+                response.token = token;
                 return res.status(200).json(response);
             }
         }
