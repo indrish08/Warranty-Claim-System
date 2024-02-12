@@ -30,12 +30,10 @@ document.getElementById('signin-form').addEventListener('submit', async function
             },
             body: `username=${username}&password=${password}`,
         })
+        const data = await response.json();
         if(response.ok){
-            const data = await response.json();
-            localStorage.setItem('JWT_Token', data.token)
             location.href = '/products';
         }else{
-            const data = await response.json();
             if(!data.username){
                 modal_content.innerHTML = 'Username not found. Please try again.';
             }else if(!data.password){

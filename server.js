@@ -2,6 +2,7 @@ const express = require('express')
 const session = require('express-session')
 const {Pool} = require('pg')
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 const User = require('./models/userModel')
 require('./initDatabase')
 // const path = require('path')
@@ -26,23 +27,26 @@ app.use(express.static('node_modules/bootstrap/dist'))
 app.use(express.static('node_modules/jquery/dist'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(session({
-    secret: 'c17259fbaa992d9ffbba1e07523621ef',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}))
+app.use(cookieParser())
 
 const isAuthenticated = (req, res, next) => {
-    if (req.session.userId) {
-        next();
+    const jwt_token = req.cookies.jwt
+    if (jwt_token) {
+        jwt.verify(jwt_token, ACCESS_TOKEN_SECRET, (err, token) => {
+            if (err) {
+                res.clearCookie('jwt')
+                res.redirect('/signin')
+            }
+            req.user = token.user;
+            next()
+        })
     } else {
         res.redirect('/signin')
     }
 }
 
-function generateAccessToken(user) {
-    return jwt.sign(user, ACCESS_TOKEN_SECRET)
+function generateAccessToken(user, maxAge) {
+    return jwt.sign({user: user}, ACCESS_TOKEN_SECRET, {expiresIn: maxAge})
 }
 
 app.get('/', (req, res) => {
@@ -84,9 +88,10 @@ app.post('/signin', async (req, res) => {
             const password_match = await User.comparePassword(password, result.dataValues.password);
             if (password_match) {
                 response.password = true;
-                const user = {user: username};
-                const token = generateAccessToken(user);
-                response.token = token;
+                const maxAge = 10 * 3600;
+                const token = generateAccessToken(username, maxAge);
+                res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
+                // response.token = token;
                 return res.status(200).json(response);
             }
         }
@@ -95,30 +100,17 @@ app.post('/signin', async (req, res) => {
         response.message = error.message;
         res.status(500).json(response);
     }
-    
-    // const select_data = `
-    //     SELECT * FROM users WHERE username = $1;
-    // `;
-    // const result = await client.query(select_data, [username])
-
-    // if (result.rows[0].password === password) {
-    //     req.session.userId = username;
-    //     res.redirect('/products');
-    // }else{
-    //     res.send('Sign In Unsuccess. Username or password is wrong check again.')
-    // }
 })
 
 app.get('/authStatus', (req, res) => {
-    const userIsLoggedIn = req.session.userId ? true : false;
+    const userIsLoggedIn = req.cookies.jwt ? true : false;
     res.json({ userIsLoggedIn });
 });
 
 app.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/signin');
-    });
-  });
+    res.clearCookie('jwt')
+    res.redirect('/signin')
+});
 
 app.listen(port, () => {
     console.log(`Server is running at http://127.0.0.1:${port}/`);
