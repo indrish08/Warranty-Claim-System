@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const bcrypt = require('bcrypt')
 const sequelize = require("../config/database");
 
-const User = sequelize.define(
+const user = sequelize.define(
   "signin",
   {
     id: {
@@ -25,7 +25,7 @@ const User = sequelize.define(
   }
 );
 
-User.findByUsername = async function (username) {
+user.findByUsername = async function (username) {
   try {
     return await this.findOne({ where: { username: username } });
   } catch (error) {
@@ -33,24 +33,24 @@ User.findByUsername = async function (username) {
   }
 };
 
-User.createUser = async function (username, password) {
-  try{
+user.createUser = async function (username, password) {
+  try {
     const hash = await bcrypt.hash(password, 10);
-    const user = await User.create({ username: username, password: hash });
-    await sequelize.sync();
+    const user = await user.create({ username: username, password: hash });
+    await user.sync();
     return user;
-  }catch(error){
+  } catch (error) {
     throw new Error(`Error creating user: ${error.message}`);
   }
 };
 
-User.comparePassword = async function(password, savedPassword){
-  try{
+user.comparePassword = async function(password, savedPassword){
+  try {
     const result = await bcrypt.compare(password, savedPassword);
     return result;
-  }catch(err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   };
 };
 
-module.exports = User;
+module.exports = user;

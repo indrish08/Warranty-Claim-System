@@ -2,12 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/authStatus')
         .then(response => response.json())
         .then(data => {
-            const userIsLoggedIn = data.userIsLoggedIn;
-            
             const signin = document.querySelector('.signin');
             const user_link = document.querySelector('.user-link');
             
-            if (userIsLoggedIn) {
+            if (data.userIsLoggedIn) {
                 signin.style.display = 'none';
                 user_link.style.display = 'block';
             } else {

@@ -4,11 +4,6 @@ const eye_icon = document.querySelector('.eye-icon')
 eye_icon.addEventListener('mousedown', function(){
     this.classList.toggle('fa-eye-slash')
     password.type = 'text'
-    // if(password.type === 'password'){
-    //     password.type = 'text'
-    // }else{
-    //     password.type = 'password'
-    // }
 })
 
 eye_icon.addEventListener('mouseup', function(){
@@ -31,6 +26,7 @@ document.getElementById('signin-form').addEventListener('submit', async function
             body: `username=${username}&password=${password}`,
         })
         const data = await response.json();
+        console.log(data);
         if(response.ok){
             location.href = '/products';
         }else{

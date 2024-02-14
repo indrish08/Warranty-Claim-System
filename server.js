@@ -3,7 +3,9 @@ const session = require('express-session')
 const {Pool} = require('pg')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
-const User = require('./models/userModel')
+const user = require('./models/user')
+const order = require('./models/order')
+const product = require('./models/product')
 require('./initDatabase')
 // const path = require('path')
 // const fs = require('fs')
@@ -29,6 +31,30 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 
+app.get('/getorder', async(req, res) => {
+    const orders = await order.findByPk(1, {
+        attributes: ['address', 'quantity'],
+        include: {
+            model: product,
+            attributes: ['name', 'price', 'warrantyPeriod']
+        }
+      })
+      console.log(orders);
+    res.json(orders)
+})
+
+app.get('/addorder', (req, res) => {
+    order.create({productId: 1, orderDate: new Date(), address: 'CBE'})
+    // product.create({name: 'PB Rockerz 255 Pro', price: 899, warrantyPeriod: 1})
+    res.send('Done')
+})
+
+app.get('/addproduct', (req, res) => {
+    product.create({name: 'PB Rockerz 260', price: 949, warrantyPeriod: 1})
+    // product.create({name: 'PB Rockerz 255 Pro', price: 899, warrantyPeriod: 1})
+    res.send('Done')
+})
+
 const isAuthenticated = (req, res, next) => {
     const jwt_token = req.cookies.jwt
     if (jwt_token) {
@@ -43,10 +69,6 @@ const isAuthenticated = (req, res, next) => {
     } else {
         res.redirect('/signin')
     }
-}
-
-function generateAccessToken(user, maxAge) {
-    return jwt.sign({user: user}, ACCESS_TOKEN_SECRET, {expiresIn: maxAge})
 }
 
 app.get('/', (req, res) => {
@@ -70,47 +92,49 @@ app.post('/signup', async (req,res) => {
     const {username, password} = req.body;
     // const username = 'indrishh';
     // const password = 'passs';
-    const user = await User.createUser(username, password);
-    console.log(user);
+    const userDetails = await user.createUser(username, password);
+    console.log(userDetails);
     res.status(200).json({message:'success'});
 })
 
 app.post('/signin', async (req, res) => {
     const {username, password} = req.body;
+    var response = {
+        username: false,
+        password: false
+    }
+    
+    product.test()
     try{
-        const result = await User.findByUsername(username);
-        var response = {
-            username: false,
-            password: false
-        }
-        if(result){
+        const result = await user.classMethods.findByUsername(username);
+        if (result) {
             response.username = true;
-            const password_match = await User.comparePassword(password, result.dataValues.password);
+            const password_match = await user.comparePassword(password, result.dataValues.password);
             if (password_match) {
                 response.password = true;
-                const maxAge = 10 * 3600;
-                const token = generateAccessToken(username, maxAge);
-                res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
-                // response.token = token;
+                const maxAge = 2 * 3600;
+                const token = jwt.sign({user: username}, ACCESS_TOKEN_SECRET, {expiresIn: maxAge});
+                res.cookie('jwt', token, {httpOnly: true});
                 return res.status(200).json(response);
             }
         }
         res.status(401).json(response);
-    }catch(error){
+    } catch (error) {
+        console.log(error.message)
         response.message = error.message;
         res.status(500).json(response);
     }
 })
 
-app.get('/authStatus', (req, res) => {
-    const userIsLoggedIn = req.cookies.jwt ? true : false;
-    res.json({ userIsLoggedIn });
-});
-
 app.get('/logout', (req, res) => {
     res.clearCookie('jwt')
     res.redirect('/signin')
-});
+})
+
+app.get('/authStatus', (req, res) => {
+    const userIsLoggedIn = req.cookies.jwt ? true : false
+    res.json({ userIsLoggedIn })
+})
 
 app.listen(port, () => {
     console.log(`Server is running at http://127.0.0.1:${port}/`);
