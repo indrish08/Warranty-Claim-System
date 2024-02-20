@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/signin.css">
+    <link rel="stylesheet" href="css/orders.css">
+
+</head>
+<body>
+    <header>
+      <nav class="navbar navbar-dark bg-primary navbar-expand-sm">
+        <a href="/" class="navbar-brand ps-3">Pulse Beat</a>
+        <button
+          class="navbar-toggler"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a href="/orders" class="nav-link text-light">Orders</a>
+            </li>
+            <li class="nav-item">
+              <a href="/warranty" class="nav-link text-light">Claim History</a>
+            </li>
+            <li class="nav-item">
+              <a href="/signin" class="nav-link text-light signin">SignIn</a>
+              <a href="/logout" class="nav-link text-dark user-link">
+                <div class="rounded-circle d-flex justify-content-center align-items-center user">
+                  <i class="fa fa-user"></i>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <br>
+
+    <article class="container">
+      <section class="head row">
+        <h2 class="col">My Orders</h2>
+        <div class="input-group col">
+          <input type="text" class="form-control" name="search" id="searchOrder" placeholder="Search your orders" required>
+          <button type="submit" class="search-span input-group-text">
+            <i class="search-icon fa fa-search"></i>&ensp;Search
+          </button>
+        </div>
+      </section>
+      <section class="order-list mt-5 mb-5">
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">20-02-2024</div>
+              <div class="item-price col-2">₹849</div>
+              <div class="item-warranty col-2 ">
+                <button class="btn btn-success disabled w-100">Shipped</button>
+              </div>
+            </div>
+          </div>
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">20-02-2024</div>
+              <div class="item-price col-2">₹999</div>
+              <div class="item-warranty col-2">
+                <button class="btn btn-warning w-100">Claim Warranty</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">14-02-2024</div>
+              <div class="item-price col-2">₹1299</div>
+              <div class="item-warranty col-2">
+                <button class="btn btn-warning w-100">Claim Warranty</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">25-01-2024</div>
+              <div class="item-price col-2">₹499</div>
+              <div class="item-warranty col-2">
+                <button class="btn btn-warning w-100">Claim Warranty</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">20-01-2024</div>
+              <div class="item-price col-2">₹399</div>
+              <div class="item-warranty col-2 ">
+                <button class="btn btn-warning w-100">Claim Warranty</button>
+              </div>
+            </div>
+          </div>
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">20-01-2024</div>
+              <div class="item-price col-2">₹777</div>
+              <div class="item-warranty col-2">
+                <button class="btn btn-warning w-100">Claim Warranty</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">05-01-2024</div>
+              <div class="item-price col-2">₹1499</div>
+              <div class="item-warranty col-2">
+                <button class="btn btn-warning w-100">Claim Warranty</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="item-head col-6">
+                <div class="item-name">Name of the product</div>
+                <div class="item-address">Address</div>
+              </div>
+              <div class="item-date col-2">02-01-2023</div>
+              <div class="item-price col-2">₹199</div>
+              <div class="item-warranty col-2">
+                <button class="btn btn-danger w-100">Warranty period over!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+
+</body>
+<script src="js/orders.js"></script>
+<script src="js/authStatus.js"></script>
+<script src="js/jquery.slim.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</html>

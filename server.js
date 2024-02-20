@@ -7,9 +7,7 @@ const models = require('./models')
 const User = models.User
 const Order = models.Order
 const Product = models.Product
-// require('./initDatabase')
-// const path = require('path')
-// const fs = require('fs')
+const path = require('path')
 
 const app = express();
 
@@ -24,9 +22,8 @@ const client = new Pool({
 const port = 3000;
 const ACCESS_TOKEN_SECRET = 'f9128bb7044d866f11971057c18a315154a09d95ab5834fe6909941c95bff1fcc82f8d4ce6067d6296f1cd649a652537d219626cc9373d6742c1ae783d9b0676'
 
-app.use(express.static('node_modules/font-awesome'))
 app.use(express.static('public'))
-app.use(express.static('node_modules/bootstrap/dist'))
+app.use(express.static('node_modules/font-awesome'))
 app.use(express.static('node_modules/jquery/dist'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -35,8 +32,6 @@ app.use(cookieParser())
 app.get('/getorder', async(req, res) => {
     const orders = await User.findAll({include: ['Orders']})
     const products = await Order.findAll({include: ['Products']})
-    console.log(orders);
-    console.log(products);
     res.json(orders)
     // res.json(products)
 })
@@ -59,22 +54,21 @@ const isAuthenticated = (req, res, next) => {
 
 app.get('/', (req, res) => {
     res.redirect('/signin');
-    // res.sendFile(__dirname + '/index.html');
 })
 
-app.get('/products', isAuthenticated, (req, res) => {
-    res.sendFile(__dirname + '/products.html');
+app.get('/orders', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '/orders.html'));
 })
 
 app.get('/warranty', isAuthenticated, (req, res) => {
-    res.sendFile(__dirname + '/warranty.html');
+    res.sendFile(path.join(__dirname, '/warranty.html'));
 })
 
 app.get('/signin', (req, res) => {
-    res.sendFile(__dirname + '/signin.html');
+    res.sendFile(path.join(__dirname, '/signin.html'));
 })
 
-app.get('/signup', async (req,res) => {
+app.post('/signup', async (req,res) => {
     const {username, password} = req.body;
     // const username = 'indrishh';
     // const password = 'passss';

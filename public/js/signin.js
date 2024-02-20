@@ -28,7 +28,7 @@ document.getElementById('signin-form').addEventListener('submit', async function
         const data = await response.json();
         console.log(data);
         if(response.ok){
-            location.href = '/products';
+            location.href = '/orders';
         }else{
             if(!data.username){
                 modal_content.innerHTML = 'Username not found. Please try again.';
