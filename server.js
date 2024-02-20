@@ -3,10 +3,11 @@ const session = require('express-session')
 const {Pool} = require('pg')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
-const user = require('./models/user')
-const order = require('./models/order')
-const product = require('./models/product')
-require('./initDatabase')
+const models = require('./models')
+const User = models.User
+const Order = models.Order
+const Product = models.Product
+// require('./initDatabase')
 // const path = require('path')
 // const fs = require('fs')
 
@@ -32,27 +33,12 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 
 app.get('/getorder', async(req, res) => {
-    const orders = await order.findByPk(1, {
-        attributes: ['address', 'quantity'],
-        include: {
-            model: product,
-            attributes: ['name', 'price', 'warrantyPeriod']
-        }
-      })
-      console.log(orders);
+    const orders = await User.findAll({include: ['Orders']})
+    const products = await Order.findAll({include: ['Products']})
+    console.log(orders);
+    console.log(products);
     res.json(orders)
-})
-
-app.get('/addorder', (req, res) => {
-    order.create({productId: 1, orderDate: new Date(), address: 'CBE'})
-    // product.create({name: 'PB Rockerz 255 Pro', price: 899, warrantyPeriod: 1})
-    res.send('Done')
-})
-
-app.get('/addproduct', (req, res) => {
-    product.create({name: 'PB Rockerz 260', price: 949, warrantyPeriod: 1})
-    // product.create({name: 'PB Rockerz 255 Pro', price: 899, warrantyPeriod: 1})
-    res.send('Done')
+    // res.json(products)
 })
 
 const isAuthenticated = (req, res, next) => {
@@ -72,7 +58,7 @@ const isAuthenticated = (req, res, next) => {
 }
 
 app.get('/', (req, res) => {
-    res.redirect('/signin')
+    res.redirect('/signin');
     // res.sendFile(__dirname + '/index.html');
 })
 
@@ -88,12 +74,12 @@ app.get('/signin', (req, res) => {
     res.sendFile(__dirname + '/signin.html');
 })
 
-app.post('/signup', async (req,res) => {
+app.get('/signup', async (req,res) => {
     const {username, password} = req.body;
     // const username = 'indrishh';
-    // const password = 'passs';
-    const userDetails = await user.createUser(username, password);
-    console.log(userDetails);
+    // const password = 'passss';
+    const userDetails = await User.createUser(username, password);
+    // console.log(userDetails);
     res.status(200).json({message:'success'});
 })
 
@@ -103,13 +89,11 @@ app.post('/signin', async (req, res) => {
         username: false,
         password: false
     }
-    
-    product.test()
     try{
-        const result = await user.classMethods.findByUsername(username);
+        const result = await User.findByUsername(username);
         if (result) {
             response.username = true;
-            const password_match = await user.comparePassword(password, result.dataValues.password);
+            const password_match = await User.comparePassword(password, result.dataValues.password);
             if (password_match) {
                 response.password = true;
                 const maxAge = 2 * 3600;

@@ -1,12 +1,11 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-// const order = require('./order')
 
-const product = sequelize.define(
-  "product",
+const Product = sequelize.define(
+  "Product",
   {
-    productId: {
-      type: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.BIGINT,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -16,51 +15,36 @@ const product = sequelize.define(
       allowNull: false,
       unique: true,
     },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    taxPercentage: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
     description: {
       type: DataTypes.STRING,
     },
-    price: {
-      type: DataTypes.FLOAT,
+    stock: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     warrantyPeriod: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-  },
-  {
-    timestamps: false,
-    classMethods: {
-        test: function(){ console.log('smth') }
-    }
-  }
-);
-
-const order = sequelize.define(
-  "order",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    productId: {
-      type: DataTypes.INTEGER,
+    shippingCharges: {
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
-    orderDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    address: {
+    soldBy: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    quantity: {
-      type: DataTypes.INTEGER,
+    sellerAddress: {
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 1,
     },
   },
   {
@@ -68,16 +52,8 @@ const order = sequelize.define(
   }
 );
 
-order.belongsTo(product, {
-  foreignKey: "productId",
-  sourceKey: "productId",
-});
+Product.associate = function (models) {
+  Product.belongsToMany(models.Order, {through: models.OrderProduct})
+}
 
-// product.hasOne(order, {
-//   foreignKey: "productId",
-//   sourceKey: "productId",
-// });
-
-product.test()
-
-module.exports = product;
+module.exports = Product;

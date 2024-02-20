@@ -1,32 +1,42 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const product = require('./product');
 
-const order = sequelize.define(
-  "order",
+const Order = sequelize.define(
+  "Order",
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-    },
-    productId: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     orderDate: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    address: {
+    dispatchDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    status: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    quantity: {
-      type: DataTypes.INTEGER,
+    shippingAddress: {
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 1,
+    },
+    billingAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    paymentMethod: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {
@@ -34,9 +44,10 @@ const order = sequelize.define(
   }
 );
 
-order.hasOne(product, {
-    foreignKey: 'productId',
-    targetKey: 'id',
-})
+Order.associate = function (models) {
+  Order.belongsTo(models.User)
+  Order.belongsToMany(models.Product, {through: models.OrderProduct})
+}
 
-module.exports = order;
+module.exports = Order;
+
