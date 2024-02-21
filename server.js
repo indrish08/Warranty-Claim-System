@@ -1,13 +1,11 @@
 const express = require('express')
-const session = require('express-session')
 const {Pool} = require('pg')
+const models = require('./models')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
-const models = require('./models')
-const User = models.User
-const Order = models.Order
-const Product = models.Product
 const path = require('path')
+const moment = require('moment')
+require('dotenv').config()
 
 const app = express();
 
@@ -20,37 +18,32 @@ const client = new Pool({
 });
 
 const port = 3000;
-const ACCESS_TOKEN_SECRET = 'f9128bb7044d866f11971057c18a315154a09d95ab5834fe6909941c95bff1fcc82f8d4ce6067d6296f1cd649a652537d219626cc9373d6742c1ae783d9b0676'
 
 app.use(express.static('public'))
 app.use(express.static('node_modules/font-awesome'))
-app.use(express.static('node_modules/jquery/dist'))
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
-
-app.get('/getorder', async(req, res) => {
-    const orders = await User.findAll({include: ['Orders']})
-    const products = await Order.findAll({include: ['Products']})
-    res.json(orders)
-    // res.json(products)
-})
 
 const isAuthenticated = (req, res, next) => {
     const jwt_token = req.cookies.jwt
     if (jwt_token) {
-        jwt.verify(jwt_token, ACCESS_TOKEN_SECRET, (err, token) => {
+        jwt.verify(jwt_token, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
             if (err) {
                 res.clearCookie('jwt')
                 res.redirect('/signin')
             }
-            req.user = token.user;
+            req.id = token.id;
             next()
         })
     } else {
         res.redirect('/signin')
     }
 }
+
+app.get('/authStatus', (req, res) => {
+    const userIsLoggedIn = req.cookies.jwt ? true : false
+    res.json({ userIsLoggedIn })
+})
 
 app.get('/', (req, res) => {
     res.redirect('/signin');
@@ -72,8 +65,7 @@ app.post('/signup', async (req,res) => {
     const {username, password} = req.body;
     // const username = 'indrishh';
     // const password = 'passss';
-    const userDetails = await User.createUser(username, password);
-    // console.log(userDetails);
+    const userDetails = await models.User.createUser(username, password);
     res.status(200).json({message:'success'});
 })
 
@@ -84,14 +76,14 @@ app.post('/signin', async (req, res) => {
         password: false
     }
     try{
-        const result = await User.findByUsername(username);
+        const result = await models.User.findByUsername(username);
         if (result) {
             response.username = true;
-            const password_match = await User.comparePassword(password, result.dataValues.password);
+            const password_match = await models.User.comparePassword(password, result.dataValues.password);
             if (password_match) {
                 response.password = true;
                 const maxAge = 2 * 3600;
-                const token = jwt.sign({user: username}, ACCESS_TOKEN_SECRET, {expiresIn: maxAge});
+                const token = jwt.sign({id: result.dataValues.id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: maxAge});
                 res.cookie('jwt', token, {httpOnly: true});
                 return res.status(200).json(response);
             }
@@ -104,14 +96,43 @@ app.post('/signin', async (req, res) => {
     }
 })
 
+app.post('/getorders', isAuthenticated, async (req, res) => {
+    console.log(req.body)
+    var filter = {
+        UserId: req.id,
+        orderDate: {
+            [models.Op.gte]: moment().subtract(30, 'days').toDate()
+        },
+    }
+
+    if (req.body.status !== 'All') {
+        filter.status = req.body.status
+    }
+    if (req.body.time === '3months') {
+        filter.orderDate = {
+            [models.Op.gte]: moment().subtract(3, 'months').toDate()
+        }
+    } else if (req.body.time !== '30days') {
+        filter.orderDate = {
+            [models.Op.between]: [
+                moment(`${req.body.time}-01-01`).toDate(),
+                moment(`${req.body.time}-12-31`).toDate()
+            ]
+        }
+    }
+
+    const orders = await models.Order.findAll({
+        where: filter,
+        order: [['orderDate', 'DESC']],
+        limit: 10,
+        include: ['Products'],
+    })
+    res.json(orders)
+})
+
 app.get('/logout', (req, res) => {
     res.clearCookie('jwt')
     res.redirect('/signin')
-})
-
-app.get('/authStatus', (req, res) => {
-    const userIsLoggedIn = req.cookies.jwt ? true : false
-    res.json({ userIsLoggedIn })
 })
 
 app.listen(port, () => {

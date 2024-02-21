@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const sequelize = require("../config/database");
 const fs = require("fs");
 const path = require("path");
@@ -13,6 +13,7 @@ const db = {};
 // });
 
 db.Sequelize = Sequelize;
+db.Op = Op;
 db.sequelize = sequelize;
 
 fs.readdirSync(__dirname)

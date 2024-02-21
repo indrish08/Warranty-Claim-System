@@ -16,8 +16,8 @@
         <a href="/" class="navbar-brand ps-3">Pulse Beat</a>
         <button
           class="navbar-toggler"
-          data-toggle="collapse"
-          data-target="#navbarCollapse"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,18 +43,85 @@
     </header>
     <br>
 
-    <article class="container">
-      <section class="head row">
-        <h2 class="col">My Orders</h2>
-        <div class="input-group col">
-          <input type="text" class="form-control" name="search" id="searchOrder" placeholder="Search your orders" required>
-          <button type="submit" class="search-span input-group-text">
-            <i class="search-icon fa fa-search"></i>&ensp;Search
+    <article class="container-lg">
+      <section class="head">
+        <div class="row">
+          <h2 class="col">My Orders</h2>
+          <div class="input-group col">
+            <input type="text" class="form-control" name="search" id="searchOrder" placeholder="Search your orders" required>
+            <button type="submit" class="search-span input-group-text">
+              <i class="search-icon fa fa-search"></i>&ensp;Search
+            </button>
+          </div>
+        </div>
+
+        <div class="filters row mt-3 text-center">
+            <div class="offset-5 col-3">
+              Order Status
+              <select class="form-select filter-status">
+                <option value="All">All</option>
+                <option value="Delevered">Delevered</option>
+                <option value="Ordered">Ordered</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="col-3">
+              Order Time
+              <select class="form-select filter-time">
+                <option value="30days">Last 30 Days</option>
+                <option value="3months">Past 3 Months</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="older">Older</option>
+              </select>
+            </div>
+            <div class="col-1 m-auto me-0 mb-0">
+              <button class="btn btn-primary filter-trigger">Filter</button>
+            </div>
+          </div>
+
+        <!-- <div class="d-flex mt-3">
+          <button 
+            class="filters-button p-2 m-auto me-0 text-decoration-none btn btn-outline-dark"
+            data-bs-toggle="collapse"
+            data-bs-target="#filter-collapse"
+          >
+            Filters <i class="fa fa-sliders"></i>
           </button>
         </div>
+        <div class="filters collapse mt-2" id="filter-collapse">
+          <div class="card">
+            <div class="row">
+              <div class="col-9">
+                <div class="p-2">
+                  <b>Order Status : </b> &ensp;
+                  <input type="checkbox" class="All-f"> All &ensp;
+                  <input type="checkbox" class="Delevered-f"> Delevered &ensp;
+                  <input type="checkbox" class="Ordered-f"> Ordered &ensp;
+                  <input type="checkbox" class="Shipped-f"> Shipped &ensp;
+                  <input type="checkbox" class="Cancelled-f"> Cancelled
+                </div>
+                <div class="p-2">
+                  <b>Order Time : </b> &ensp;
+                  <input type="checkbox" class="30days-f"> Last 30 Days &ensp;
+                  <input type="checkbox" class="3months-f"> Past 3 Months &ensp;
+                  <input type="checkbox" class="2024-f"> 2024 &ensp;
+                  <input type="checkbox" class="2023-f"> 2023 &ensp;
+                  <input type="checkbox" class="2022-f"> 2022 &ensp;
+                  <input type="checkbox" class="older-f"> Older
+                </div>
+              </div>
+              <button class="btn btn-primary col-2 m-auto">Get Results</button>
+            </div>
+          </div>  
+        </div> -->
+
       </section>
-      <section class="order-list mt-5 mb-5">
-        <div class="list-group">
+      <section class="order-list mt-3 mb-5">
+        <!-- <div class="list-group">
           <div class="list-group-item">
             <div class="row align-items-center">
               <div class="item-head col-6">
@@ -169,7 +236,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </section>
     </article>
 

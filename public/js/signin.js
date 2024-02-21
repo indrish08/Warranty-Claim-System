@@ -21,9 +21,12 @@ document.getElementById('signin-form').addEventListener('submit', async function
         const response = await fetch('/signin', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: `username=${username}&password=${password}`,
+            body: JSON.stringify({
+                "username": username,
+                "password": password
+            }),
         })
         const data = await response.json();
         console.log(data);
