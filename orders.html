@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/signin.css">
     <link rel="stylesheet" href="css/orders.css">
-
 </head>
 <body>
     <header>
@@ -31,11 +30,17 @@
             </li>
             <li class="nav-item">
               <a href="/signin" class="nav-link text-light signin">SignIn</a>
-              <a href="/logout" class="nav-link text-dark user-link">
-                <div class="rounded-circle d-flex justify-content-center align-items-center user">
-                  <i class="fa fa-user"></i>
-                </div>
-              </a>
+              <div class="dropdown user-link">
+                <button class="btn" type="button" data-bs-toggle="dropdown">
+                  <div class="rounded-circle d-flex justify-content-center align-items-center user">
+                    <i class="fa fa-user"></i>
+                  </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li class="dropdown-item username-profile">Username</a></li>
+                  <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>
+              </div>
             </li>
           </ul>
         </div>
@@ -48,15 +53,15 @@
         <div class="row">
           <h2 class="col">My Orders</h2>
           <div class="input-group col">
-            <input type="text" class="form-control" name="search" id="searchOrder" placeholder="Search your orders" required>
-            <button type="submit" class="search-span input-group-text">
+            <input type="text" class="form-control searchOrder" id="searchOrder" placeholder="Search your orders">
+            <button type="submit" class="search-button input-group-text">
               <i class="search-icon fa fa-search"></i>&ensp;Search
             </button>
           </div>
         </div>
 
         <div class="filters row mt-3 text-center">
-            <div class="offset-5 col-3">
+            <div class="col-3">
               Order Status
               <select class="form-select filter-status">
                 <option value="All">All</option>
@@ -78,7 +83,7 @@
                 <option value="older">Older</option>
               </select>
             </div>
-            <div class="col-1 m-auto me-0 mb-0">
+            <div class="col-1 mt-auto">
               <button class="btn btn-primary filter-trigger">Filter</button>
             </div>
           </div>
@@ -244,5 +249,5 @@
 <script src="js/orders.js"></script>
 <script src="js/authStatus.js"></script>
 <script src="js/jquery.slim.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
 </html>

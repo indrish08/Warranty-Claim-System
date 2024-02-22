@@ -32,6 +32,7 @@ document.getElementById('signin-form').addEventListener('submit', async function
         console.log(data);
         if(response.ok){
             location.href = '/orders';
+            localStorage.setItem('username', username)
         }else{
             if(!data.username){
                 modal_content.innerHTML = 'Username not found. Please try again.';
@@ -41,7 +42,7 @@ document.getElementById('signin-form').addEventListener('submit', async function
             else{
                 modal_content.innerHTML = data.message;
             }
-            $("#login-error").modal()
+            $("#login-error").modal('show')
         }
     } catch (error) {
         console.error('Error fetching :', error);

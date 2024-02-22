@@ -30,6 +30,7 @@ const isAuthenticated = (req, res, next) => {
         jwt.verify(jwt_token, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
             if (err) {
                 res.clearCookie('jwt')
+                res.clearCookie('username')
                 res.redirect('/signin')
             }
             req.id = token.id;
@@ -40,9 +41,8 @@ const isAuthenticated = (req, res, next) => {
     }
 }
 
-app.get('/authStatus', (req, res) => {
-    const userIsLoggedIn = req.cookies.jwt ? true : false
-    res.json({ userIsLoggedIn })
+app.get('/authStatus', isAuthenticated, (req, res) => {
+    res.json({ userIsLoggedIn: true })
 })
 
 app.get('/', (req, res) => {
@@ -85,6 +85,7 @@ app.post('/signin', async (req, res) => {
                 const maxAge = 2 * 3600;
                 const token = jwt.sign({id: result.dataValues.id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: maxAge});
                 res.cookie('jwt', token, {httpOnly: true});
+                res.cookie('username', username)
                 return res.status(200).json(response);
             }
         }
@@ -97,27 +98,45 @@ app.post('/signin', async (req, res) => {
 })
 
 app.post('/getorders', isAuthenticated, async (req, res) => {
-    console.log(req.body)
     var filter = {
         UserId: req.id,
-        orderDate: {
-            [models.Op.gte]: moment().subtract(30, 'days').toDate()
-        },
     }
-
-    if (req.body.status !== 'All') {
-        filter.status = req.body.status
-    }
-    if (req.body.time === '3months') {
-        filter.orderDate = {
-            [models.Op.gte]: moment().subtract(3, 'months').toDate()
+    var products = ['Products']
+    if (req.body.search) {
+        products = [
+            {
+              model: models.Product,
+              where: {
+                name: {
+                  [models.Op.iLike]: `%${req.body.search}%`,
+                },
+              },
+            },
+        ]
+    } 
+    else {
+        if (req.body.status !== 'All') {
+            filter.status = req.body.status
         }
-    } else if (req.body.time !== '30days') {
-        filter.orderDate = {
-            [models.Op.between]: [
-                moment(`${req.body.time}-01-01`).toDate(),
-                moment(`${req.body.time}-12-31`).toDate()
-            ]
+        if (req.body.time === '30days') {
+            filter.orderDate = {
+                [models.Op.gte]: moment().subtract(30, 'days').toDate()
+            }
+        } else if (req.body.time === '3months') {
+            filter.orderDate = {
+                [models.Op.gte]: moment().subtract(3, 'months').toDate()
+            }
+        } else if (req.body.time === 'older') {
+            filter.orderDate = {
+                [models.Op.lte]: moment(`2021-01-01`).toDate()
+            }
+        } else {
+            filter.orderDate = {
+                [models.Op.between]: [
+                    moment(`${req.body.time}-01-01`).toDate(),
+                    moment(`${req.body.time}-12-31`).toDate()
+                ]
+            }
         }
     }
 
@@ -125,13 +144,14 @@ app.post('/getorders', isAuthenticated, async (req, res) => {
         where: filter,
         order: [['orderDate', 'DESC']],
         limit: 10,
-        include: ['Products'],
+        include: products,
     })
     res.json(orders)
 })
 
 app.get('/logout', (req, res) => {
     res.clearCookie('jwt')
+    res.clearCookie('username')
     res.redirect('/signin')
 })
 
