@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/signin.css">
     <link rel="stylesheet" href="css/orders.css">
+    <link rel="stylesheet" href="css/dataTables.dataTables.css">
 </head>
 <body>
     <header>
@@ -74,6 +75,7 @@
             <div class="col-3">
               Order Time
               <select class="form-select filter-time">
+                <option value="all">All</option>
                 <option value="30days">Last 30 Days</option>
                 <option value="3months">Past 3 Months</option>
                 <option value="2024">2024</option>
@@ -85,6 +87,9 @@
             </div>
             <div class="col-1 mt-auto">
               <button class="btn btn-primary filter-trigger">Filter</button>
+            </div>
+            <div class="col-3 m-auto">
+              Total Orders in this page: <span class="orders-count">0</span>
             </div>
           </div>
 
@@ -125,6 +130,7 @@
         </div> -->
 
       </section>
+
       <section class="order-list mt-3 mb-5">
         <!-- <div class="list-group">
           <div class="list-group-item">
@@ -243,11 +249,30 @@
           </div>
         </div> -->
       </section>
+
+      <!-- <section class="text-center m-auto mb-5">
+        <button class="btn btn-primary">Load more</button>
+      </section> -->
+
+      <section>
+        <table id="example" class="display" style="width:100%">
+          <thead>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Address</th>
+            <th>Date</th>
+            <th>Price</th>
+            <th>Status</th>
+          </thead>
+        </table>
+      </section>
+
     </article>
 
 </body>
-<script src="js/orders.js"></script>
 <script src="js/authStatus.js"></script>
 <script src="js/jquery.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/dataTables.js"></script>
+<script src="js/orders.js"></script>
 </html>

@@ -82,8 +82,9 @@ app.post('/signin', async (req, res) => {
             const password_match = await models.User.comparePassword(password, result.dataValues.password);
             if (password_match) {
                 response.password = true;
-                const maxAge = 2 * 3600;
+                const maxAge = 2 * 3600 * 24;
                 const token = jwt.sign({id: result.dataValues.id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: maxAge});
+                console.log(token);
                 res.cookie('jwt', token, {httpOnly: true});
                 res.cookie('username', username)
                 return res.status(200).json(response);
@@ -130,7 +131,7 @@ app.post('/getorders', isAuthenticated, async (req, res) => {
             filter.orderDate = {
                 [models.Op.lte]: moment(`2021-01-01`).toDate()
             }
-        } else {
+        } else if (req.body.time !== 'all') {
             filter.orderDate = {
                 [models.Op.between]: [
                     moment(`${req.body.time}-01-01`).toDate(),
@@ -143,7 +144,7 @@ app.post('/getorders', isAuthenticated, async (req, res) => {
     const orders = await models.Order.findAll({
         where: filter,
         order: [['orderDate', 'DESC']],
-        limit: 10,
+        // limit: 20,
         include: products,
     })
     res.json(orders)

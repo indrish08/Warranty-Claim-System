@@ -1,10 +1,10 @@
 var orders
+var count;
 
 document.addEventListener("DOMContentLoaded", getOrdersData)
 document.querySelector('.filter-trigger').addEventListener('mousedown', getOrdersData)
 document.querySelector('.search-button').addEventListener('mousedown', searchOrdersData)
 document.querySelector('.searchOrder').addEventListener('input', searchOrders)
-
 
 async function searchOrdersData() {
     const search = document.querySelector('.searchOrder').value
@@ -25,15 +25,17 @@ async function searchOrdersData() {
 
 function searchOrders() {
     const search = document.querySelector('.searchOrder').value
-    var filteredOrders = orders.filter(order => {
-        return order.Products.some(product => product.name.toLowerCase().includes(search.toLowerCase()))
-    })
+    var filteredOrders = orders.filter(order => 
+        order.Products.some(product => product.name.toLowerCase().includes(search.toLowerCase()))
+    )
     loadData(filteredOrders)
 }
 
 async function getOrdersData() {
+    count = 0
     const status = document.querySelector('.filter-status').value
     const time = document.querySelector('.filter-time').value
+    
     
     const response = await fetch('/getorders', {
         method: 'POST',
@@ -46,10 +48,12 @@ async function getOrdersData() {
         })
     });
     orders = await response.json();
-    loadData(orders);
+    // loadData(orders);
+    loadTable(orders);
 }   
 
 function loadData(orders) {
+    document.querySelector('.orders-count').innerHTML = orders.length
     const order_list = document.querySelector(".order-list");
     while (order_list.lastChild) {
         order_list.removeChild(order_list.lastChild);
@@ -63,6 +67,11 @@ function loadData(orders) {
     }
     
     orders.forEach((order) => {
+        if (count === 10) {
+            return;
+        }
+        console.log(count);
+        count++;
         var list_group = document.createElement("div");
         list_group.classList.add("list-group", "mt-3");
 
@@ -84,6 +93,7 @@ function loadData(orders) {
 
         order_list.append(list_group);
     });
+    count = 0;
 }
 
 function addOrderItem(order) {
@@ -111,18 +121,18 @@ function addOrderItem(order) {
     grid.append(item_head, item_date, item_price, item_warranty);
     list_group_item.appendChild(grid);
 
-    item_name.innerHTML = `${order.name}${
+    item_name.textContent = `${order.name}${
         order.quantity === 1 ? "" : " x" + order.quantity
     }`;
-    item_address.innerHTML = order.address;
-    item_date.innerHTML = order.date;
-    item_price.innerHTML = `₹${order.price}`;
+    item_address.textContent = order.address;
+    item_date.textContent = order.date;
+    item_price.textContent = `₹${order.price}`;
 
     if (order.status === 'Delevered') {
-        button.innerHTML = 'Claim Warranty'
+        button.textContent = 'Claim Warranty'
         button.classList.add('btn-warning')
     } else {
-        button.innerHTML = order.status
+        button.textContent = order.status
         if (order.status === 'Cancelled') {
             button.classList.add('btn-danger')
         } else if (order.status === 'Ordered') {
@@ -134,3 +144,21 @@ function addOrderItem(order) {
 
     return list_group_item;
 }
+
+
+async function loadTable(orders) {
+    console.log(orders);
+    new DataTable('#example', {
+        data: orders,
+        columns: [
+            { data: 'id' },
+            // { data: 'Products.0.id' },
+            { data: 'Products.0.name' },
+            { data: 'billingAddress' },
+            { data: 'orderDate' },
+            { data: 'Products.0.price' },
+            { data: 'status' },
+        ],
+    });
+}
+ 

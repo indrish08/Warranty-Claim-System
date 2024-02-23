@@ -6,12 +6,6 @@ const basename = path.basename(__filename);
 
 const db = {};
 
-// const sequelize = new Sequelize('pulsebeat', 'postgres', 'indrish', {
-//   host: 'localhost',
-//   dialect: 'postgres',
-//   logging: false
-// });
-
 db.Sequelize = Sequelize;
 db.Op = Op;
 db.sequelize = sequelize;
