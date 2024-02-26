@@ -1,10 +1,44 @@
-var orders
-var count;
+// var orders
+var table
 
-document.addEventListener("DOMContentLoaded", getOrdersData)
-document.querySelector('.filter-trigger').addEventListener('mousedown', getOrdersData)
+document.addEventListener("DOMContentLoaded", loadDataTable)
 document.querySelector('.search-button').addEventListener('mousedown', searchOrdersData)
-document.querySelector('.searchOrder').addEventListener('input', searchOrders)
+// document.querySelector('.searchOrder').addEventListener('input', searchOrders)
+document.querySelector('.filter-trigger').addEventListener('mousedown', updateDataTable)
+document.querySelector('.filter-status').addEventListener('change', updateDataTable)
+document.querySelector('.filter-time').addEventListener('change', updateDataTable)
+
+function filterStatus(){
+    table.column(5).search(this.value).draw();
+}
+
+function filterTime(){
+    switch (this.value) {
+        case 'all':
+            table.column(3).search('').draw();
+            break;
+        case '30days':
+            var start = moment().subtract(30, 'days');
+            table.column(3).search(date => 
+                moment(date, 'DD/MM/YYYY').isBetween(start, moment(), undefined, '[]')
+            ).draw();
+            break;
+        case '3months':
+            var start = moment().subtract(3, 'months');
+            table.column(3).search(date => 
+                moment(date, 'DD/MM/YYYY').isBetween(start, moment(), undefined, '[]')
+            ).draw();
+            break;
+        case 'older':
+            table.column(3).search(d => 
+                moment(d, 'DD/MM/YYYY').isBefore(moment('2020-12-31').endOf('year'))
+            ).draw();
+            break;
+        default:
+            table.column(3).search(this.value + "$", true, false).draw()
+            break;
+    }
+}
 
 async function searchOrdersData() {
     const search = document.querySelector('.searchOrder').value
@@ -32,10 +66,8 @@ function searchOrders() {
 }
 
 async function getOrdersData() {
-    count = 0
     const status = document.querySelector('.filter-status').value
     const time = document.querySelector('.filter-time').value
-    
     
     const response = await fetch('/getorders', {
         method: 'POST',
@@ -49,9 +81,10 @@ async function getOrdersData() {
     });
     orders = await response.json();
     // loadData(orders);
-    loadTable(orders);
+    return orders;
 }   
 
+// inserting 
 function loadData(orders) {
     document.querySelector('.orders-count').innerHTML = orders.length
     const order_list = document.querySelector(".order-list");
@@ -67,11 +100,6 @@ function loadData(orders) {
     }
     
     orders.forEach((order) => {
-        if (count === 10) {
-            return;
-        }
-        console.log(count);
-        count++;
         var list_group = document.createElement("div");
         list_group.classList.add("list-group", "mt-3");
 
@@ -93,9 +121,7 @@ function loadData(orders) {
 
         order_list.append(list_group);
     });
-    count = 0;
 }
-
 function addOrderItem(order) {
     var list_group_item = document.createElement("div");
     list_group_item.classList.add("list-group-item");
@@ -146,19 +172,65 @@ function addOrderItem(order) {
 }
 
 
-async function loadTable(orders) {
-    console.log(orders);
-    new DataTable('#example', {
+async function loadDataTable() {
+    orders = await getOrdersData()
+    table = await new DataTable("#example", {
         data: orders,
+        order: [[3,'desc']],
+        columnDefs: [
+            {
+                targets: [1,2,4,5],
+                orderable: false
+            },
+            {
+                targets: [0,5],
+                className: "text-center", 
+            }
+        ],
         columns: [
             { data: 'id' },
-            // { data: 'Products.0.id' },
-            { data: 'Products.0.name' },
+            { 
+                data: 'Products',
+                render: data => data[0].name
+            },
             { data: 'billingAddress' },
-            { data: 'orderDate' },
-            { data: 'Products.0.price' },
+            { 
+                data: 'orderDate', 
+                render: data => new Date(data).toLocaleDateString("en-GB"),
+                type: 'date-uk'
+            },
+            { 
+                data: 'Products',
+                render: (data) => `₹${data[0].price}`
+            },
             { data: 'status' },
         ],
+
+    });
+    updateButton();
+    table.on('draw.dt', updateButton);
+    table.on('click', '.claim-warranty-button', openModal);
+}
+
+async function updateDataTable() {
+    orders = await getOrdersData()
+    table.clear().draw()
+    table.rows.add(orders).draw()
+}
+
+function updateButton(){
+    table.column(5).nodes().each(function (cell) {
+        var status = table.cell(cell).data();
+        if (status === 'Delivered') {
+            var orderId = cell.closest('tr').querySelector('td:first-child').textContent;
+            var buttonHTML = '<button class="claim-warranty-button btn btn-warning" data-order-id="' + orderId + '">Claim Warranty</button>';
+            cell.innerHTML = buttonHTML;
+        }
     });
 }
- 
+
+function openModal() {
+    console.log(this);
+    document.querySelector('.order-id').textContent = this.getAttribute('data-order-id');
+    $('#claim-warranty').modal('show');
+}

@@ -116,7 +116,7 @@ app.post('/getorders', isAuthenticated, async (req, res) => {
         ]
     } 
     else {
-        if (req.body.status !== 'All') {
+        if (req.body.status !== '') {
             filter.status = req.body.status
         }
         if (req.body.time === '30days') {
