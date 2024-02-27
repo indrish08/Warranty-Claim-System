@@ -136,7 +136,7 @@ app.post('/getorders', isAuthenticated, async (req, res) => {
     const orders = await models.Order.findAll({
         where: filter,
         order: [['orderDate', 'DESC']],
-        limit: 3,
+        // limit: 3,
         include: products,
     })
     // console.log(JSON.parse(JSON.stringify(orders)));
