@@ -40,7 +40,7 @@
     <article class="container-lg">
       <section class="head">
         <div class="row">
-          <h2 class="col">My Orders</h2>
+          <h3 class="col">My Orders</h2>
           <!-- <div class="input-group col">
             <input type="text" class="form-control searchOrder" id="searchOrder" placeholder="Search your orders">
             <button type="submit" class="search-button input-group-text">
@@ -85,173 +85,13 @@
             <div class="col-1 mt-auto">
               <button class="btn btn-primary filter-trigger">Filter</button>
             </div>
-            <!-- <div class="col-3 m-auto">
-              Total Orders in this page: <span class="orders-count">0</span>
-            </div> -->
           </div>
-
-        <!-- <div class="d-flex mt-3">
-          <button 
-            class="filters-button p-2 m-auto me-0 text-decoration-none btn btn-outline-dark"
-            data-bs-toggle="collapse"
-            data-bs-target="#filter-collapse"
-          >
-            Filters <i class="fa fa-sliders"></i>
-          </button>
-        </div>
-        <div class="filters collapse mt-2" id="filter-collapse">
-          <div class="card">
-            <div class="row">
-              <div class="col-9">
-                <div class="p-2">
-                  <b>Order Status : </b> &ensp;
-                  <input type="checkbox" class="All-f"> All &ensp;
-                  <input type="checkbox" class="Delevered-f"> Delevered &ensp;
-                  <input type="checkbox" class="Ordered-f"> Ordered &ensp;
-                  <input type="checkbox" class="Shipped-f"> Shipped &ensp;
-                  <input type="checkbox" class="Cancelled-f"> Cancelled
-                </div>
-                <div class="p-2">
-                  <b>Order Time : </b> &ensp;
-                  <input type="checkbox" class="30days-f"> Last 30 Days &ensp;
-                  <input type="checkbox" class="3months-f"> Past 3 Months &ensp;
-                  <input type="checkbox" class="2024-f"> 2024 &ensp;
-                  <input type="checkbox" class="2023-f"> 2023 &ensp;
-                  <input type="checkbox" class="2022-f"> 2022 &ensp;
-                  <input type="checkbox" class="older-f"> Older
-                </div>
-              </div>
-              <button class="btn btn-primary col-2 m-auto">Get Results</button>
-            </div>
-          </div>  
-        </div> -->
-
       </section>
 
-      <section class="order-list mt-3 mb-5">
-        <!-- <div class="list-group">
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">20-02-2024</div>
-              <div class="item-price col-2">₹849</div>
-              <div class="item-warranty col-2 ">
-                <button class="btn btn-success disabled w-100">Shipped</button>
-              </div>
-            </div>
-          </div>
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">20-02-2024</div>
-              <div class="item-price col-2">₹999</div>
-              <div class="item-warranty col-2">
-                <button class="btn btn-warning w-100">Claim Warranty</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="list-group">
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">14-02-2024</div>
-              <div class="item-price col-2">₹1299</div>
-              <div class="item-warranty col-2">
-                <button class="btn btn-warning w-100">Claim Warranty</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="list-group">
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">25-01-2024</div>
-              <div class="item-price col-2">₹499</div>
-              <div class="item-warranty col-2">
-                <button class="btn btn-warning w-100">Claim Warranty</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="list-group">
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">20-01-2024</div>
-              <div class="item-price col-2">₹399</div>
-              <div class="item-warranty col-2 ">
-                <button class="btn btn-warning w-100">Claim Warranty</button>
-              </div>
-            </div>
-          </div>
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">20-01-2024</div>
-              <div class="item-price col-2">₹777</div>
-              <div class="item-warranty col-2">
-                <button class="btn btn-warning w-100">Claim Warranty</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="list-group">
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">05-01-2024</div>
-              <div class="item-price col-2">₹1499</div>
-              <div class="item-warranty col-2">
-                <button class="btn btn-warning w-100">Claim Warranty</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="list-group">
-          <div class="list-group-item">
-            <div class="row align-items-center">
-              <div class="item-head col-6">
-                <div class="item-name">Name of the product</div>
-                <div class="item-address">Address</div>
-              </div>
-              <div class="item-date col-2">02-01-2023</div>
-              <div class="item-price col-2">₹199</div>
-              <div class="item-warranty col-2">
-                <button class="btn btn-danger w-100">Warranty period over!</button>
-              </div>
-            </div>
-          </div>
-        </div> -->
-      </section>
-
-      <!-- <section class="text-center m-auto mb-5">
-        <button class="btn btn-primary">Load more</button>
+      <!-- <section class="order-list mt-3 mb-5">
       </section> -->
 
-      <section>
+      <section class="mt-3 mb-5">
         <table id="example" class="table table-striped display" style="width:100%">
           <thead>
             <th class="text-center">Order ID</th>
