@@ -84,7 +84,6 @@ app.post('/signin', async (req, res) => {
                 response.password = true;
                 const maxAge = 2 * 3600 * 24;
                 const token = jwt.sign({id: result.dataValues.id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: maxAge});
-                console.log(token);
                 res.cookie('jwt', token, {httpOnly: true});
                 res.cookie('username', username)
                 return res.status(200).json(response);
@@ -103,50 +102,44 @@ app.post('/getorders', isAuthenticated, async (req, res) => {
         UserId: req.id,
     }
     var products = ['Products']
-    if (req.body.search) {
-        products = [
-            {
-              model: models.Product,
-              where: {
-                name: {
-                  [models.Op.iLike]: `%${req.body.search}%`,
-                },
-              },
-            },
-        ]
-    } 
-    else {
-        if (req.body.status !== '') {
-            filter.status = req.body.status
+    if (req.body.status !== '') {
+        filter.status = req.body.status
+    }
+    if (req.body.time === '30days') {
+        filter.orderDate = {
+            [models.Op.gte]: moment().subtract(30, 'days').toDate()
         }
-        if (req.body.time === '30days') {
-            filter.orderDate = {
-                [models.Op.gte]: moment().subtract(30, 'days').toDate()
-            }
-        } else if (req.body.time === '3months') {
-            filter.orderDate = {
-                [models.Op.gte]: moment().subtract(3, 'months').toDate()
-            }
-        } else if (req.body.time === 'older') {
-            filter.orderDate = {
-                [models.Op.lte]: moment(`2021-01-01`).toDate()
-            }
-        } else if (req.body.time !== 'all') {
-            filter.orderDate = {
-                [models.Op.between]: [
-                    moment(`${req.body.time}-01-01`).toDate(),
-                    moment(`${req.body.time}-12-31`).toDate()
-                ]
-            }
+    } else if (req.body.time === '3months') {
+        filter.orderDate = {
+            [models.Op.gte]: moment().subtract(3, 'months').toDate()
+        }
+    } else if (req.body.time === 'older') {
+        filter.orderDate = {
+            [models.Op.lte]: moment(`2021-01-01`).toDate()
+        }
+    } else if (req.body.time === 'custom-range') {
+        filter.orderDate = {
+            [models.Op.between]: [
+                moment(req.body.startDate).toDate(),
+                moment(req.body.endDate).toDate()
+            ]
+        }
+    } else if (req.body.time !== 'all') {
+        filter.orderDate = {
+            [models.Op.between]: [
+                moment(`${req.body.time}-01-01`).toDate(),
+                moment(`${req.body.time}-12-31`).toDate()
+            ]
         }
     }
 
     const orders = await models.Order.findAll({
         where: filter,
         order: [['orderDate', 'DESC']],
-        // limit: 20,
+        limit: 3,
         include: products,
     })
+    // console.log(JSON.parse(JSON.stringify(orders)));
     res.json(orders)
 })
 

@@ -9,13 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 signin.style.display = 'none';
                 user_link.style.display = 'block';
                 document.querySelector('.username-profile').innerHTML = getCookie('username')
-            } else {
-                signin.style.display = 'block';
-                user_link.style.display = 'none';
             }
         })
         .catch(error => {
-            console.error('Error fetching authentication status:', error);
+            localStorage.removeItem('username')
+            // console.error('Error fetching authentication status:', error);
         });
     });
     
