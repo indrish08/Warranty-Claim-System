@@ -1,0 +1,36 @@
+<header>
+  <nav class="navbar navbar-dark bg-primary navbar-expand-sm">
+    <a href="/" class="navbar-brand ps-3">Pulse Beat</a>
+    <button
+      class="navbar-toggler"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a href="/orders" class="nav-link text-light">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a href="/warranty" class="nav-link text-light">Claim History</a>
+        </li>
+        <li class="nav-item">
+          <a href="/signin" class="nav-link text-light signin">SignIn</a>
+          <div class="dropdown user-link">
+            <button class="btn" type="button" data-bs-toggle="dropdown">
+              <div class="rounded-circle d-flex justify-content-center align-items-center user">
+                <i class="fa fa-user"></i>
+              </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li class="dropdown-item username-profile">Username</li>
+              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header> 

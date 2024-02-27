@@ -1,13 +1,14 @@
 const password = document.querySelector('#password')
+const eye_span = document.querySelector('.eye-span')
 const eye_icon = document.querySelector('.eye-icon')
 
-eye_icon.addEventListener('mousedown', function(){
-    this.classList.toggle('fa-eye-slash')
+eye_span.addEventListener('mousedown', function(){
+    eye_icon.classList.toggle('fa-eye-slash')
     password.type = 'text'
 })
 
-eye_icon.addEventListener('mouseup', function(){
-    this.classList.toggle('fa-eye-slash')
+eye_span.addEventListener('mouseup', function(){
+    eye_icon.classList.toggle('fa-eye-slash')
     password.type = 'password'
 })
 

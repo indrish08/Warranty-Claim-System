@@ -1,5 +1,4 @@
 const express = require('express')
-const {Pool} = require('pg')
 const models = require('./models')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
@@ -8,16 +7,6 @@ const moment = require('moment')
 require('dotenv').config()
 
 const app = express();
-
-const client = new Pool({
-    user: 'postgres',
-    password: 'indrish',
-    host: 'localhost',
-    port: '5432',
-    database: 'pulsebeat',
-});
-
-const port = 3000;
 
 app.use(express.static('public'))
 app.use(express.static('node_modules/font-awesome'))
@@ -42,7 +31,10 @@ const isAuthenticated = (req, res, next) => {
 }
 
 app.get('/authStatus', isAuthenticated, (req, res) => {
-    res.json({ userIsLoggedIn: true })
+    res.json({ 
+        userIsLoggedIn: true, 
+        username: req.cookies.username 
+    })
 })
 
 app.get('/', (req, res) => {
@@ -139,7 +131,6 @@ app.post('/getorders', isAuthenticated, async (req, res) => {
         // limit: 3,
         include: products,
     })
-    // console.log(JSON.parse(JSON.stringify(orders)));
     res.json(orders)
 })
 
@@ -148,6 +139,8 @@ app.get('/logout', (req, res) => {
     res.clearCookie('username')
     res.redirect('/signin')
 })
+
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Server is running at http://127.0.0.1:${port}/`);

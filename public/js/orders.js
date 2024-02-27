@@ -1,11 +1,18 @@
 var orders
 var table
 
-const startPicker = new SimplePicker();
-const endPicker = new SimplePicker(".head");
+const startPicker = new SimplePicker({
+    zIndex: 10,
+});
+const endPicker = new SimplePicker(".head", {
+    zIndex: 10,
+});
 
 const startDateTimeInput = document.querySelector(".start-datetime");
 const endDateTimeInput = document.querySelector(".end-datetime");
+document.addEventListener("DOMContentLoaded", loadDataTable);
+document.querySelector(".filter-trigger").addEventListener("mousedown", updateDataTable);
+document.querySelector(".filter-time").addEventListener("change", selectTime);
 
 startDateTimeInput.addEventListener("click", () => {
     startPicker.open();
@@ -17,6 +24,11 @@ endDateTimeInput.addEventListener("click", () => {
 
 startPicker.on("submit", (date, readableDate) => {
     startDateTimeInput.value = readableDate;
+    const startDate = new Date(readableDate);
+    const endDate = new Date(endDateTimeInput.value)
+    if (endDate && endDate <= startDate) {
+        startDateTimeInput.value = "";
+    }
 });
 
 endPicker.on("submit", (date, readableDate) => {
@@ -27,13 +39,6 @@ endPicker.on("submit", (date, readableDate) => {
         endDateTimeInput.value = "";
     }
 });
-
-document.addEventListener("DOMContentLoaded", loadDataTable);
-document.querySelector(".filter-trigger").addEventListener("mousedown", updateDataTable);
-// document.querySelector(".filter-status").addEventListener("change", updateDataTable);
-document.querySelector(".filter-time").addEventListener("change", selectTime);
-// document.querySelector('.search-button').addEventListener('mousedown', searchOrdersData)
-// document.querySelector('.searchOrder').addEventListener('input', searchOrders)
 
 async function getOrdersData() {
     const status = document.querySelector(".filter-status").value;
