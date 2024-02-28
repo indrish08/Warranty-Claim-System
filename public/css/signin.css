@@ -13,6 +13,7 @@ body {
 
 .navbar-nav > .nav-item {
   height: 40px;
+  /* width: 100px; */
   margin-inline: 10px;
   padding-inline: 5px;
   /* border: 1px solid red; */
@@ -95,7 +96,7 @@ input[type="checkbox"]:checked {
 .user-link {
   width: 61px;
   text-decoration: none;
-  display: none;
+  /* display: none; */
 }
 
 .user {

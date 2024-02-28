@@ -12,6 +12,7 @@ app.use(express.static('public'))
 app.use(express.static('node_modules/font-awesome'))
 app.use(express.json())
 app.use(cookieParser())
+app.set('view engine', 'pug')
 
 const isAuthenticated = (req, res, next) => {
     const jwt_token = req.cookies.jwt
@@ -30,9 +31,9 @@ const isAuthenticated = (req, res, next) => {
     }
 }
 
-app.get('/authStatus', isAuthenticated, (req, res) => {
+app.get('/authStatus', (req, res) => {
     res.json({ 
-        userIsLoggedIn: true, 
+        userIsLoggedIn: req.cookies.username, 
         username: req.cookies.username 
     })
 })
@@ -43,6 +44,10 @@ app.get('/', (req, res) => {
 
 app.get('/orders', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '/orders.html'));
+})
+
+app.get('/orderspug', isAuthenticated, (req, res) => {
+    res.render('orders', {username: req.cookies.username});
 })
 
 app.get('/warranty', isAuthenticated, (req, res) => {

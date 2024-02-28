@@ -1,0 +1,77 @@
+doctype html
+head
+    title Orders
+    link(rel='stylesheet', href='css/font-awesome.css')
+    link(rel='stylesheet', href='css/bootstrap.min.css')
+    link(rel='stylesheet', href='css/dataTables.bootstrap5.min.css')
+    link(rel='stylesheet', href='css/signin.css')
+    link(rel='stylesheet', href='css/orders.css')
+    link(rel='stylesheet', href='css/simplepicker.css')
+    script(src='js/jquery.slim.min.js')
+    script(src='js/bootstrap.bundle.min.js')
+    script(src='js/dataTables.js')
+    script(src='js/dataTables.bootstrap5.min.js')
+    script(src='js/date-uk.js')
+    script(src='js/simplepicker.js')
+body
+    include header
+    //- p.text-center #{username}
+    #claim-warranty.modal.fade
+        .modal-dialog.modal-dialog-centered
+            .modal-content
+                .modal-header
+                    button.btn-close(type='button', data-bs-dismiss='modal')
+                .modal-body
+                    p#modal-content
+                    | You are ready to claim warranty for Order: 
+                    span.order-id
+                .modal-footer.justify-content-center
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Submit
+    br
+    article.container-lg
+        section.head
+            .row
+                h3.col
+                    | My Orders
+            .filters.row.mt-3.text-center
+                .col-2
+                    | Order Status
+                    select.form-select.filter-status
+                        option(value='') All
+                        option(value='Delivered') Delivered
+                        option(value='Ordered') Ordered
+                        option(value='Shipped') Shipped
+                        option(value='Cancelled') Cancelled
+                .col-2
+                    | Order Time
+                    select.form-select.filter-time
+                        option(value='all') All
+                        option(value='custom-range') Custom Range
+                        option(value='30days') Last 30 Days
+                        option(value='3months') Past 3 Months
+                        option(value='2024') 2024
+                        option(value='2023') 2023
+                        option(value='2022') 2022
+                        option(value='2021') 2021
+                        option(value='older') Older
+                .col-3.custom-range-picker.d-none
+                    | From
+                    input.form-control.start-datetime(type='text')
+                .col-3.custom-range-picker.d-none
+                    | To
+                    input.form-control.end-datetime(type='text')
+                .col-1.mt-auto
+                    button.btn.btn-primary.filter-trigger Filter
+        section.mt-3.mb-5
+            table#example.table.table-striped.display(style='width:100%')
+                thead
+                    th.text-center Order ID
+                    th.text-center Product Name
+                    th.text-center Address
+                    th.text-center Date
+                    th.text-center Price
+                    th.text-center Status
+
+script(src='https://cdn.jsdelivr.net/momentjs/latest/moment.min.js')
+//- script(src='js/authStatus.js')
+script(src='js/orders.js')

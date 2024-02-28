@@ -33,7 +33,6 @@ document.getElementById('signin-form').addEventListener('submit', async function
         console.log(data);
         if(response.ok){
             location.href = '/orders';
-            localStorage.setItem('username', username)
         }else{
             if(!data.username){
                 modal_content.innerHTML = 'Username not found. Please try again.';

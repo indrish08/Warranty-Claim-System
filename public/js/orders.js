@@ -95,12 +95,22 @@ async function loadDataTable() {
                 data: "Products",
                 render: (data) => `₹${data[0].price}`,
             },
-            { data: "status" },
+            { 
+                data: "status",
+                render: (data, type, object) => {
+                    if (data === 'Delivered') {
+                        if (moment(object.dispatchDate).add(object.Products[0].warrantyPeriod, 'years').toDate() > moment().toDate()) {
+                            return `<button class="warranty-button btn btn-warning" data-order-id="${object.id}">Claim Warranty</button>`;
+                        } else {
+                            return `<button class="warranty-button btn btn-danger disabled">Warranty period over</button>`;
+                        }
+                    }
+                    return data
+                }
+            },
         ],
     });
-    updateButton();
-    table.on("draw.dt", updateButton);
-    table.on("click", ".claim-warranty-button", openModal);
+    table.on("click", ".warranty-button", openModal);
 }
 
 async function updateDataTable() {
@@ -109,25 +119,8 @@ async function updateDataTable() {
     table.rows.add(orders).draw();
 }
 
-function updateButton() {
-    table
-        .column(5)
-        .nodes()
-        .each(function (cell) {
-            var status = table.cell(cell).data();
-            if (status === "Delivered") {
-                var orderId = cell
-                    .closest("tr")
-                    .querySelector("td:first-child").textContent;
-                var buttonHTML = `<button class="claim-warranty-button btn btn-warning" data-order-id="${orderId}">Claim Warranty</button>`;
-                cell.innerHTML = buttonHTML;
-            }
-        });
-}
-
 function openModal() {
-    document.querySelector(".order-id").textContent =
-        this.getAttribute("data-order-id");
+    document.querySelector(".order-id").textContent = this.getAttribute("data-order-id");
     $("#claim-warranty").modal("show");
 }
 

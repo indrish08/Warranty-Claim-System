@@ -11,8 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('.username-profile').innerHTML = data.username
             }
         })
-        .catch(error => {
-            localStorage.removeItem('username')
-            // console.error('Error fetching authentication status:', error);
+        .catch((error) => {
+            console.error('Error fetching authentication status:', error);
         });
-    });
+});
